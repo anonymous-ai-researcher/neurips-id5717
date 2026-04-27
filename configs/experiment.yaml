@@ -1,0 +1,41 @@
+# Experiment configuration for Certified TNN Verification
+# All parameters match the paper exactly.
+
+benchmark:
+  dataset: MNIST
+  architectures:
+    small:  [784, 64, 64, 64, 10]
+    medium: [784, 128, 256, 256, 128, 10]
+    large:  [784, 256, 512, 512, 512, 256, 10]
+  sparsity_levels: [0.15, 0.30, 0.50]
+  seeds: [0, 1, 2, 3, 4]
+  perturbation_radii: [1, 2, 3]
+  instances_per_pair: 8  # 4 UNSAT + 4 SAT
+  selection_seed: 42
+
+training:
+  algorithm: TTQ
+  optimizer: SGD
+  momentum: 0.9
+  learning_rate: 0.01
+  lr_decay_factor: 0.1
+  lr_decay_epochs: [80, 120]
+  batch_size: 128
+  epochs: 160
+
+solver:
+  qualitative_timeout: 500    # seconds
+  quantitative_timeout: 5000  # seconds
+  memory_limit: 16384         # MB (16 GB)
+  threads: 1
+
+pac_parameters:
+  eta: 0.8       # tolerance
+  delta: 0.2     # confidence
+  # Derived: t = ceil(log2(3/delta)) = 4 iterations
+  # Derived: pivot = ceil(9.84 * (1 + 1/eta)) = 23
+
+hardware:
+  cpu: "AMD EPYC-Milan (2x64 cores)"
+  ram: "512 GB"
+  execution: "single-threaded"
