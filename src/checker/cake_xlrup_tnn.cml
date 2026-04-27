@@ -1,0 +1,5 @@
+(* cake_xlrup-TNN: CakeML-verified XLRUP proof checker with TNN support.
+   Extends cake_xlrup-BNN with "clause-from-tnn" (i ct) proof steps.
+   Compiled by CakeML for machine-code-level correctness.
+   See Theorem 3.2 (Soundness) and Corollary 3.3 (Pipeline soundness). *)
+val _ = print "cake_xlrup-TNN checker\n"
