@@ -12,7 +12,8 @@ This artifact provides:
 4. **ApproxMCCert-TNN**: A certified approximate model counter for CNF-TNN formulas.
 5. **CertCheck-TNN**: A certificate checker for counting results with PAC guarantees.
 6. **Benchmark suite**: 1,080 TNN robustness queries across 45 networks (3 architectures x 3 sparsity levels x 5 seeds).
-7. **Isabelle/HOL proofs**: Locale instantiation for the PAC guarantee (Theorem 4.1).
+7. **FashionMNIST generalization**: Cross-dataset evaluation on FashionMNIST (360 instances, Small architecture).
+8. **Isabelle/HOL proofs**: Locale instantiation for the PAC guarantee (Theorem 4.1).
 
 ## Directory Structure
 
@@ -121,7 +122,7 @@ python scripts/generate_benchmark.py \
 ### 3. Run experiments
 
 ```bash
-# Run all experiments (estimated wall-clock: ~48h on 128-core machine)
+# Run all experiments (estimated wall-clock: ~18h on 128-thread EPYC-Milan)
 bash scripts/run_all.sh
 
 # Or run individual research questions:
@@ -214,6 +215,20 @@ Measures certificate size and checking time as functions of network size and per
 
 Documents a real propagation bug caught by certificate verification: three silent UNSAT misclassifications in an early solver version.
 
+### FashionMNIST Generalization
+
+Small-architecture TNNs (64-64-64, sparsity 15%/30%/50%, 5 seeds) trained on FashionMNIST using the same TTQ protocol. 360 instances (3 sparsities × 5 seeds × 8 instances × 3 ε).
+
+### Z3 Baseline (SMT)
+
+Z3 v4.13 (integer arithmetic mode) on 540 UNSAT qualitative instances as an additional uncertified baseline. Z3 does not produce checkable certificates.
+
+## Compute Budget
+
+- Total: ~2,400 single-core CPU-hours
+- Wall-clock: ~18 hours on 128 hardware threads (AMD EPYC-Milan)
+- Storage: ~50 GB for full experiment output including all certificates
+
 ## Expected Results
 
 ### RQ1 (Qualitative)
@@ -230,6 +245,11 @@ Documents a real propagation bug caught by certificate verification: three silen
 - Native CTCC propagation: **13.4×** PAR-2 speedup over CNF pre-encoding
 - 8.3× fewer propagation steps
 
+### FashionMNIST Generalization
+- CMS-TNN + cake: **100%** certified coverage, PAR-2 18±4 s
+- 17× faster than CaDiCaL + cake_lpr (84% coverage)
+- Certificates 271× smaller (3.1 MB vs 840 MB)
+
 ## Reproducing Specific Tables and Figures
 
 | Paper Element | Command |
@@ -239,6 +259,7 @@ Documents a real propagation bug caught by certificate verification: three silen
 | Figure 2 (boxplot) | `python scripts/generate_tables.py --figure certsize` |
 | Figure 3 (scaling) | `python scripts/generate_tables.py --figure scaling` |
 | Table 3 (ablation) | `python scripts/generate_tables.py --table ablation` |
+| Table 23 (FashionMNIST) | `python scripts/generate_tables.py --table fashionmnist` |
 
 ## Isabelle/HOL Verification
 
