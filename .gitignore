@@ -1,0 +1,15 @@
+build/
+data/
+results/
+benchmarks/instances/
+benchmarks/networks/
+__pycache__/
+*.pyc
+*.o
+*.so
+*.log
+*.frat
+*.xlrup
+*.lrat
+*.cert
+*.cnf
